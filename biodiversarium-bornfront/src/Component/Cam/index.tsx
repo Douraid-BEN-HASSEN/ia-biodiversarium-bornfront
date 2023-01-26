@@ -1,9 +1,8 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import ResultTable from '../Table';
 import { Grid } from '@mui/material';
-import { cameraChoiceEnum } from '../HomePageButton';
+import {CameraKey, cameraObject, CameraType} from '../../config';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import { config } from '../../config';
 import Hls from "hls.js";
@@ -35,7 +34,7 @@ interface CamProps {
         }
     }[]): void;
 
-    cameraChoice: cameraChoiceEnum;
+    cameraChoice: CameraKey;
 }
 
 type detection = {
@@ -67,7 +66,7 @@ const Cam: React.FC<CamProps> = (Props) => {
             if (Hls.isSupported()) {
                 let hls = new Hls();
                 if (videoRef.current) {
-                    hls.loadSource(cameraChoice.toString());
+                    hls.loadSource(cameraObject[cameraChoice].url.toString());
                     hls.attachMedia(videoRef.current);
                     hls.on(Hls.Events.MANIFEST_PARSED, function () {
                         videoRef.current?.play().then();
@@ -77,22 +76,19 @@ const Cam: React.FC<CamProps> = (Props) => {
         }, 2000); // Update the content of the element after 2seconds
     }, []);
 
-
-
     const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
 
     const getVideo = () => {
-        let video = document.querySelector('video') as HTMLVideoElement;
-        let img = document.getElementById('videoDisplay') as HTMLImageElement;
+        const video = document.querySelector('video') as HTMLVideoElement;
+        const img = document.getElementById('videoDisplay') as HTMLImageElement;
         if (video && img) {
-            let canvas = document.createElement('canvas');
+            const canvas = document.createElement('canvas');
             canvas.width = img.width;
             canvas.height = img.height;
 
             const ctx = canvas.getContext('2d');
             if (ctx) ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageB64 = canvas.toDataURL('image/jpeg');
-            originalImage.current = imageB64;
+            originalImage.current = canvas.toDataURL('image/jpeg');
         }
     };
 
