@@ -18,22 +18,3 @@ COPY . .
 EXPOSE 80
 
 CMD node index.js
-
-
-FROM alpine:3.17 as banuyls-biodiversarium-video-proxy-vlc
-
-RUN apk add vlc
-
-RUN mkdir /vlc
-
-RUN adduser -k /vlc -D -u 1000 vlc
-
-WORKDIR /vlc
-
-COPY entrypoint.sh entrypoint.sh
-
-RUN chmod +x /vlc/entrypoint.sh
-
-USER "vlc"
-
-ENTRYPOINT ["/vlc/entrypoint.sh"]
