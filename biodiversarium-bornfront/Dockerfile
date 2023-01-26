@@ -19,11 +19,13 @@ COPY package*.json ./
 ENV NODE_ENV=production
 
 RUN npm install -g serve
-RUN npm ci --only=production
+RUN npm install
 
 COPY . ./
 
 RUN npm run build
+
+RUN cd build && mkdir born && mv `ls -1 . | grep -vE "(index.html|born)"` born/
 
 EXPOSE 80
 
@@ -40,8 +42,6 @@ RUN npm install
 
 COPY . ./
 
-RUN npm run build
-
 EXPOSE 80
 
-CMD npm start 
+CMD npm start
