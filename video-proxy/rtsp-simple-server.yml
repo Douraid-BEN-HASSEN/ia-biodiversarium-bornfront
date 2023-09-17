@@ -1,0 +1,7 @@
+paths:
+    video/1:
+        source: rtsp://194.167.19.226:1433/1/h264major
+    video/2:
+        source: rtsp://admin:Imerir66@194.167.19.226:1434/11
+    video/test:
+        source: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4

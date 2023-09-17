@@ -1,0 +1,29 @@
+version: "2.5"
+
+services:
+    born:
+        build:
+            context: biodiversarium-bornfront/
+            target: banuyls-biodiversarium-born-dev
+        restart: always
+        environment:
+            - PORT=80
+        #        - REACT_APP_API_URL=""
+        ports:
+            - "80:80"
+        networks:
+            - http-cors
+
+    rtsp-to-http:
+        image: aler9/rtsp-simple-server
+        restart: always
+        networks:
+            - rtsp-to-http-network
+        volumes:
+            - ./video-proxy/rtsp-simple-server.yml:/rtsp-simple-server.yml:ro
+
+networks:
+    rtsp-to-http-network:
+        external: false
+    http-cors:
+        external: false
